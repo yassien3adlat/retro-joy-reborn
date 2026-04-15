@@ -7,6 +7,8 @@ import poloQuarterZipWhite from "@/assets/products/polo-quarter-zip-white.png";
 import poloShirtNavy from "@/assets/products/polo-shirt-navy.png";
 import linenPantsMen from "@/assets/products/linen-pants-men.png";
 import linenPantsWomen from "@/assets/products/linen-pants-women.png";
+import tshirtBlack from "@/assets/products/tshirt-black.png";
+import tshirtWhite from "@/assets/products/tshirt-white.png";
 
 export type Category = "men" | "women" | "accessories";
 export type Season = "summer" | "winter";
@@ -150,6 +152,34 @@ export const staticProducts: StaticProduct[] = [
     category: "women",
     season: "summer",
     tags: ["pants", "linen", "summer"],
+    inStock: true,
+    isNew: true,
+  },
+  {
+    id: "static-11",
+    handle: "lostar-eclipse-tee",
+    title: "LOSTAR Eclipse Tee",
+    description: "Dark oversized tee featuring the iconic LOSTAR eclipse graphic. Premium heavyweight cotton with a relaxed drop-shoulder fit.",
+    price: 850,
+    currency: "EGP",
+    image: tshirtBlack,
+    category: "men",
+    season: "summer",
+    tags: ["tshirt", "graphic", "streetwear"],
+    inStock: true,
+    isNew: true,
+  },
+  {
+    id: "static-12",
+    handle: "lostar-legacy-tee",
+    title: "LOSTAR Legacy Tee",
+    description: "White oversized tee with the signature LOSTAR boy graphic and script logo. Premium cotton with a vintage-inspired wash.",
+    price: 850,
+    currency: "EGP",
+    image: tshirtWhite,
+    category: "men",
+    season: "summer",
+    tags: ["tshirt", "graphic", "streetwear"],
     inStock: true,
     isNew: true,
   },
