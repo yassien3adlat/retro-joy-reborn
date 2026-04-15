@@ -9,6 +9,7 @@ import { CursorFollower } from "@/components/CursorFollower";
 import Index from "./pages/Index.tsx";
 
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const StaticProductDetail = lazy(() => import("./pages/StaticProductDetail.tsx"));
 
 const queryClient = new QueryClient();
 
