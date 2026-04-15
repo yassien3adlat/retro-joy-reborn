@@ -8,11 +8,6 @@ import { useCartSync } from "@/hooks/useCartSync";
 import { CursorFollower } from "@/components/CursorFollower";
 import Index from "./pages/Index.tsx";
 
-const ProductDetail = lazy(() => import("./pages/ProductDetail.tsx"));
-const StaticProductDetail = lazy(() => import("./pages/StaticProductDetail.tsx"));
-const CategoryPage = lazy(() => import("./pages/CategoryPage.tsx"));
-const WishlistPage = lazy(() => import("./pages/WishlistPage.tsx"));
-
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient();
@@ -32,10 +27,6 @@ function AppContent() {
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/category/:category" element={<CategoryPage />} />
-          <Route path="/product/static/:handle" element={<StaticProductDetail />} />
-          <Route path="/product/:handle" element={<ProductDetail />} />
-          <Route path="/wishlist" element={<WishlistPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
