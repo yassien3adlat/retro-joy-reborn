@@ -9,13 +9,7 @@ import { useWishlistStore } from "@/stores/wishlistStore";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
-const navItems = [
-  { label: "New In", path: "/category/new-in" },
-  { label: "Men", path: "/category/men" },
-  { label: "Women", path: "/category/women" },
-  { label: "Accessories", path: "/category/accessories" },
-  { label: "AI Stylist", path: "/outfit-builder", comingSoon: true },
-];
+const navItems: Array<{ label: string; path: string; comingSoon?: boolean }> = [];
 
 export function StoreHeader() {
   const [scrolled, setScrolled] = useState(false);

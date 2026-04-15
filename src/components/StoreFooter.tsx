@@ -199,12 +199,6 @@ export function StoreFooter() {
 
             {/* Link groups */}
             {[
-              { title: "Shop", links: [
-                { label: "New Arrivals", path: "/category/new-in" },
-                { label: "Men", path: "/category/men" },
-                { label: "Women", path: "/category/women" },
-                { label: "Accessories", path: "/category/accessories" },
-              ]},
               { title: "Help", links: [
                 { label: "Shipping", path: "#" },
                 { label: "Returns", path: "#" },
