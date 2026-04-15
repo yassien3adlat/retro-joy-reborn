@@ -119,7 +119,7 @@ export function HeroSection() {
           <motion.div className="flex items-center justify-center gap-3 mb-4 md:mb-6" variants={fadeUp}>
             <motion.div className="w-8 md:w-14 h-px bg-gold origin-left" variants={lineReveal} />
             <p className="text-[9px] md:text-[11px] font-sans font-medium uppercase tracking-[0.4em] text-foreground/55">
-              Dress With Class For Less
+              New Collection Available
             </p>
             <motion.div className="w-8 md:w-14 h-px bg-gold origin-right" variants={lineReveal} />
           </motion.div>
@@ -130,7 +130,7 @@ export function HeroSection() {
             variants={fadeUp}
           >
             <motion.span className="inline-block overflow-hidden">
-              50% Off
+              Browse The
             </motion.span>
             <br />
             <motion.span
@@ -143,7 +143,7 @@ export function HeroSection() {
                 },
               }}
             >
-              Sitewide
+              New Collection
             </motion.span>
           </motion.h1>
 
