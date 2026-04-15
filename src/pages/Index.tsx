@@ -1,7 +1,5 @@
 import { StoreHeader } from "@/components/StoreHeader";
 import { HeroSection } from "@/components/HeroSection";
-import { CategoryShowcase } from "@/components/CategoryShowcase";
-import { ProductGrid } from "@/components/ProductGrid";
 import { StoreFooter } from "@/components/StoreFooter";
 import { BackToTop } from "@/components/BackToTop";
 import { PageTransition } from "@/components/PageTransition";
@@ -10,7 +8,6 @@ import { Preloader } from "@/components/Preloader";
 import { Marquee } from "@/components/Marquee";
 import { FeaturesStrip } from "@/components/FeaturesStrip";
 import { BrandStory } from "@/components/BrandStory";
-import { SeasonalCollections } from "@/components/SeasonalCollections";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
@@ -78,9 +75,7 @@ const Index = () => {
           <StoreHeader />
           <HeroSection />
           <Marquee />
-          <CategoryShowcase />
           <FeaturesStrip />
-          <SeasonalCollections />
           <BrandStory />
           <QuoteSection />
           <StoreFooter />
