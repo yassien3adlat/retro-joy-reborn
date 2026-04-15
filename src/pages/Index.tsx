@@ -8,38 +8,12 @@ import { Preloader } from "@/components/Preloader";
 import { Marquee } from "@/components/Marquee";
 import { FeaturesStrip } from "@/components/FeaturesStrip";
 import { BrandStory } from "@/components/BrandStory";
-import { Product3DCard } from "@/components/ProductShowcase3D";
-import { staticProducts } from "@/data/staticProducts";
+import { ProductShowcase3D } from "@/components/ProductShowcase3D";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 function CollectionSection() {
-  return (
-    <section className="py-20 md:py-32 border-t border-border/20">
-      <div className="container">
-        <motion.div
-          className="text-center mb-14 md:mb-20"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <p className="font-sans text-[10px] font-medium uppercase tracking-[0.3em] text-muted-foreground mb-4">
-            New Arrivals
-          </p>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl tracking-tight">
-            The Collection
-          </h2>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-12 max-w-5xl mx-auto">
-          {staticProducts.map((product, i) => (
-            <Product3DCard key={product.id} product={product} index={i} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  return <ProductShowcase3D />;
 }
 
 function QuoteSection() {
