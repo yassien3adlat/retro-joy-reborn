@@ -8,6 +8,7 @@ import { Preloader } from "@/components/Preloader";
 import { Marquee } from "@/components/Marquee";
 import { FeaturesStrip } from "@/components/FeaturesStrip";
 import { BrandStory } from "@/components/BrandStory";
+import { ProductShowcase3D } from "@/components/ProductShowcase3D";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
@@ -77,6 +78,7 @@ const Index = () => {
           <Marquee />
           <FeaturesStrip />
           <BrandStory />
+          <ProductShowcase3D />
           <QuoteSection />
           <StoreFooter />
           <BackToTop />
