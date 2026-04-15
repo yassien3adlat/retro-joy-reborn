@@ -78,6 +78,7 @@ const Index = () => {
           <Marquee />
           <FeaturesStrip />
           <BrandStory />
+          <ProductShowcase3D />
           <QuoteSection />
           <StoreFooter />
           <BackToTop />
