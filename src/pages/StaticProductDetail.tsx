@@ -65,19 +65,13 @@ export default function StaticProductDetail() {
           {/* Image */}
           <motion.div className="space-y-4" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
             <div className="relative overflow-hidden rounded-lg">
-              <div className="relative aspect-square flex items-center justify-center p-8">
-                {/* Flash effect */}
+              <div className="relative aspect-square flex items-center justify-center p-6">
+                {/* Subtle ambient shadow — no color tinting */}
                 <div className="absolute inset-0 pointer-events-none">
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-[90%] rounded-full opacity-80"
-                    style={{ background: "radial-gradient(circle, hsl(var(--gold-light) / 0.55) 0%, hsl(var(--gold) / 0.25) 30%, transparent 65%)" }} />
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[12%] opacity-40"
-                    style={{ background: "linear-gradient(90deg, transparent 0%, hsl(var(--gold-light) / 0.7) 15%, hsl(var(--background) / 0.9) 50%, hsl(var(--gold-light) / 0.7) 85%, transparent 100%)", filter: "blur(14px)" }} />
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] h-[95%] rounded-full opacity-35"
-                    style={{ background: "radial-gradient(circle, transparent 30%, hsl(var(--gold) / 0.25) 55%, transparent 70%)" }} />
-                  <div className="absolute bottom-[8%] left-1/2 -translate-x-1/2 w-[60%] h-[8%] opacity-40"
-                    style={{ background: "radial-gradient(ellipse, hsl(var(--gold-light) / 0.6), transparent 65%)", filter: "blur(12px)" }} />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-full opacity-[0.08]"
+                    style={{ background: "radial-gradient(circle, hsl(var(--foreground)), transparent 65%)" }} />
                 </div>
-                <img src={product.image} alt={product.title} className="max-h-full max-w-full object-contain" style={{ mixBlendMode: "multiply" }} />
+                <img src={product.image} alt={product.title} className="max-h-full max-w-full object-contain relative z-10" style={{ filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.12))" }} />
               </div>
 
               <motion.button

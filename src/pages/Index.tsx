@@ -8,14 +8,12 @@ import { Preloader } from "@/components/Preloader";
 import { Marquee } from "@/components/Marquee";
 import { FeaturesStrip } from "@/components/FeaturesStrip";
 import { BrandStory } from "@/components/BrandStory";
-import { StaticProductCard } from "@/components/StaticProductCard";
+import { Product3DCard } from "@/components/ProductShowcase3D";
 import { staticProducts } from "@/data/staticProducts";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
-function NewCollectionGrid() {
-  const newProducts = staticProducts.filter((p) => p.isNew);
-
+function CollectionSection() {
   return (
     <section className="py-20 md:py-32 border-t border-border/20">
       <div className="container">
@@ -34,9 +32,9 @@ function NewCollectionGrid() {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {newProducts.map((product, i) => (
-            <StaticProductCard key={product.id} product={product} index={i} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-12 max-w-5xl mx-auto">
+          {staticProducts.map((product, i) => (
+            <Product3DCard key={product.id} product={product} index={i} />
           ))}
         </div>
       </div>
@@ -109,7 +107,7 @@ const Index = () => {
           <Marquee />
           <FeaturesStrip />
           <BrandStory />
-          <NewCollectionGrid />
+          <CollectionSection />
           <QuoteSection />
           <StoreFooter />
           <BackToTop />
