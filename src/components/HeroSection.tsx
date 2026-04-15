@@ -119,7 +119,7 @@ export function HeroSection() {
           <motion.div className="flex items-center justify-center gap-3 mb-4 md:mb-6" variants={fadeUp}>
             <motion.div className="w-8 md:w-14 h-px bg-gold origin-left" variants={lineReveal} />
             <p className="text-[9px] md:text-[11px] font-sans font-medium uppercase tracking-[0.4em] text-foreground/55">
-              Dress With Class For Less
+              New Collection Available
             </p>
             <motion.div className="w-8 md:w-14 h-px bg-gold origin-right" variants={lineReveal} />
           </motion.div>
@@ -130,7 +130,7 @@ export function HeroSection() {
             variants={fadeUp}
           >
             <motion.span className="inline-block overflow-hidden">
-              50% Off
+              Browse The
             </motion.span>
             <br />
             <motion.span
@@ -143,7 +143,7 @@ export function HeroSection() {
                 },
               }}
             >
-              Sitewide
+              New Collection
             </motion.span>
           </motion.h1>
 
@@ -157,32 +157,19 @@ export function HeroSection() {
             </span>
           </motion.div>
 
-          {/* CTA Buttons */}
-          <motion.div className="mt-10 md:mt-14 flex items-center justify-center gap-4" variants={fadeUp}>
+          {/* CTA Button */}
+          <motion.div className="mt-10 md:mt-14 flex items-center justify-center" variants={fadeUp}>
             <MagneticButton
-              to="/category/men"
+              to="/"
               className="group inline-flex items-center gap-2.5 h-13 md:h-[3.75rem] px-9 md:px-12 bg-foreground text-background text-[10px] md:text-[11px] uppercase tracking-[0.22em] font-sans font-medium rounded-full hover:bg-gold-dark transition-all duration-600 relative overflow-hidden shadow-[0_10px_40px_-8px_hsl(var(--foreground)/0.45)]"
             >
-              <span className="relative z-10">Shop Men</span>
+              <span className="relative z-10">Browse Collection</span>
               <span className="relative z-10 inline-block text-xs">→</span>
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-gold-dark to-gold"
                 initial={{ x: "-100%" }}
                 whileHover={{ x: "0%" }}
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              />
-            </MagneticButton>
-
-            <MagneticButton
-              to="/category/women"
-              className="group inline-flex items-center gap-2 h-13 md:h-[3.75rem] px-8 md:px-10 text-foreground/80 text-[10px] md:text-[11px] uppercase tracking-[0.22em] font-sans font-medium border border-gold/25 rounded-full hover:border-gold/60 hover:text-foreground transition-all duration-500 relative overflow-hidden"
-            >
-              <span className="relative z-10">Shop Women</span>
-              <motion.div
-                className="absolute inset-0 bg-gold/[0.07]"
-                initial={{ y: "100%" }}
-                whileHover={{ y: "0%" }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               />
             </MagneticButton>
           </motion.div>
