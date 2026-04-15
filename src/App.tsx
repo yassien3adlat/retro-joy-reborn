@@ -9,6 +9,7 @@ import { CursorFollower } from "@/components/CursorFollower";
 import Index from "./pages/Index.tsx";
 
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const StaticProductDetail = lazy(() => import("./pages/StaticProductDetail.tsx"));
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ function AppContent() {
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/product/static/:handle" element={<StaticProductDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

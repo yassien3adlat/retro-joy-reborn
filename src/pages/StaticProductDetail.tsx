@@ -48,7 +48,7 @@ export default function StaticProductDetail() {
     });
   };
 
-  const categoryPath = product.category === "men" ? "/category/men" : "/category/women";
+  const categoryPath = "/";
 
   return (
     <div className="min-h-screen bg-background">
