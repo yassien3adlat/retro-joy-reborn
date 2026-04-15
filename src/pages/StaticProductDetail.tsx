@@ -66,12 +66,17 @@ export default function StaticProductDetail() {
           <motion.div className="space-y-4" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
             <div className="relative overflow-hidden rounded-lg">
               <div className="relative aspect-square flex items-center justify-center p-6">
-                {/* Subtle ambient shadow — no color tinting */}
                 <div className="absolute inset-0 pointer-events-none">
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-full opacity-[0.08]"
-                    style={{ background: "radial-gradient(circle, hsl(var(--foreground)), transparent 65%)" }} />
+                  <div className="absolute top-1/2 left-1/2 h-[84%] w-[84%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-75"
+                    style={{ background: "radial-gradient(circle, hsl(var(--gold-light) / 0.42) 0%, hsl(var(--gold) / 0.16) 34%, transparent 70%)" }} />
+                  <div className="absolute top-[48%] left-1/2 h-[12%] w-[108%] -translate-x-1/2 -translate-y-1/2 opacity-55"
+                    style={{ background: "linear-gradient(90deg, transparent 0%, hsl(var(--gold-light) / 0.46) 18%, hsl(var(--background) / 0.94) 50%, hsl(var(--gold-light) / 0.46) 82%, transparent 100%)", filter: "blur(12px)" }} />
+                  <div className="absolute top-1/2 left-1/2 h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30"
+                    style={{ background: "radial-gradient(circle, transparent 36%, hsl(var(--gold) / 0.16) 58%, transparent 74%)" }} />
+                  <div className="absolute bottom-[8%] left-1/2 h-[9%] w-[60%] -translate-x-1/2 opacity-35"
+                    style={{ background: "radial-gradient(ellipse, hsl(var(--gold-light) / 0.3), transparent 68%)", filter: "blur(14px)" }} />
                 </div>
-                <img src={product.image} alt={product.title} className="max-h-full max-w-full object-contain relative z-10" style={{ filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.12))" }} />
+                <img src={product.image} alt={product.title} className="relative z-10 max-h-full max-w-full object-contain" style={{ filter: "drop-shadow(0 20px 40px rgba(15, 23, 42, 0.14))" }} />
               </div>
 
               <motion.button

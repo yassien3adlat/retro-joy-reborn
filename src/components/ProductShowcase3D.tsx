@@ -1,183 +1,241 @@
-import { useRef, useCallback, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform, animate } from "framer-motion";
+import { useCallback, useRef, useState } from "react";
+import {
+  animate,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from "framer-motion";
 import { Link } from "react-router-dom";
-import type { StaticProduct } from "@/data/staticProducts";
+import { staticProducts, type StaticProduct } from "@/data/staticProducts";
 
 interface Product3DCardProps {
   product: StaticProduct;
   index: number;
 }
 
-function Product3DCard({ product, index }: Product3DCardProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+export function Product3DCard({ product, index }: Product3DCardProps) {
+  const prefersReducedMotion = useReducedMotion();
   const isDragging = useRef(false);
   const lastX = useRef(0);
+  const lastTime = useRef(0);
+  const releaseVelocity = useRef(0);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const rawRotateY = useMotionValue(0);
-  const rotateY = useSpring(rawRotateY, { stiffness: 120, damping: 25, mass: 0.8 });
+  const rawRotateY = useMotionValue(index % 2 === 0 ? -8 : 8);
+  const rotateY = useSpring(rawRotateY, {
+    stiffness: 90,
+    damping: 20,
+    mass: 0.8,
+  });
 
-  // Subtle tilt on vertical axis for depth
-  const shadowOffsetX = useTransform(rotateY, [-180, 0, 180], [30, 0, -30]);
-  const shadowBlur = useTransform(rotateY, [-180, -90, 0, 90, 180], [40, 25, 50, 25, 40]);
-
-  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+  const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    rawRotateY.stop();
     isDragging.current = true;
     lastX.current = e.clientX;
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-  }, []);
+    lastTime.current = performance.now();
+    releaseVelocity.current = 0;
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }, [rawRotateY]);
 
-  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+  const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging.current) return;
-    const delta = e.clientX - lastX.current;
+
+    const now = performance.now();
+    const deltaX = e.clientX - lastX.current;
+    const elapsed = Math.max(now - lastTime.current, 16);
+
     lastX.current = e.clientX;
-    rawRotateY.set(rawRotateY.get() + delta * 0.6);
+    lastTime.current = now;
+
+    const rotationDelta = deltaX * 2.1;
+    releaseVelocity.current = rotationDelta / elapsed;
+    rawRotateY.set(rawRotateY.get() + rotationDelta);
   }, [rawRotateY]);
 
   const handlePointerUp = useCallback(() => {
     if (!isDragging.current) return;
+
     isDragging.current = false;
-    // Snap to nearest 0° or ±360° face
     const current = rawRotateY.get();
-    const nearest = Math.round(current / 360) * 360;
-    animate(rawRotateY, nearest, { type: "spring", stiffness: 60, damping: 18 });
+    const momentumTarget = current + releaseVelocity.current * 260;
+
+    animate(rawRotateY, momentumTarget, {
+      type: "spring",
+      stiffness: 34,
+      damping: 14,
+      mass: 1,
+      velocity: releaseVelocity.current,
+    });
   }, [rawRotateY]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 60 }}
+    <motion.article
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 1, delay: index * 0.2, ease: [0.16, 1, 0.3, 1] }}
-      className="flex flex-col items-center"
+      viewport={{ once: true, margin: "-30px" }}
+      transition={{ duration: 0.9, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
+      className="w-full min-w-0"
     >
-      {/* 3D rotation area */}
       <div
-        ref={containerRef}
-        className="relative w-full max-w-[340px] md:max-w-[420px] cursor-grab active:cursor-grabbing select-none touch-none"
-        style={{ perspective: "1200px" }}
+        className="relative w-full cursor-grab select-none active:cursor-grabbing"
+        style={{ perspective: "1400px", touchAction: "pan-y" }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
+        onPointerLeave={handlePointerUp}
       >
         <motion.div
-          className="relative w-full aspect-[3/4] flex items-center justify-center"
+          className="relative aspect-[4/5] w-full"
           style={{
             rotateY,
+            rotateX: -2,
             transformStyle: "preserve-3d",
           }}
         >
-          {/* Front face */}
-          <div
-            className="absolute inset-0 flex items-center justify-center p-4"
-            style={{ backfaceVisibility: "hidden" }}
-          >
-            {!imageLoaded && (
-              <div className="absolute inset-[10%] rounded-2xl bg-muted/20 animate-pulse" />
-            )}
-            <img
-              src={product.image}
-              alt={product.title}
-              loading="lazy"
-              onLoad={() => setImageLoaded(true)}
-              draggable={false}
-              className={`relative z-10 w-[92%] h-[92%] object-contain transition-opacity duration-500 ${
-                imageLoaded ? "opacity-100" : "opacity-0"
-              }`}
+          <div className="absolute inset-0 pointer-events-none">
+            <motion.div
+              className="absolute left-1/2 top-1/2 h-[84%] w-[84%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70"
               style={{
-                filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.15))",
+                background:
+                  "radial-gradient(circle, hsl(var(--gold-light) / 0.42) 0%, hsl(var(--gold) / 0.18) 34%, transparent 72%)",
+              }}
+              animate={
+                prefersReducedMotion
+                  ? undefined
+                  : {
+                      scale: [0.98, 1.03, 0.98],
+                      opacity: [0.5, 0.78, 0.5],
+                    }
+              }
+              transition={{
+                duration: 4.6,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: index * 0.35,
+              }}
+            />
+            <motion.div
+              className="absolute left-1/2 top-[48%] h-[12%] w-[112%] -translate-x-1/2 -translate-y-1/2 opacity-55"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent 0%, hsl(var(--gold-light) / 0.44) 18%, hsl(var(--background) / 0.94) 50%, hsl(var(--gold-light) / 0.44) 82%, transparent 100%)",
+                filter: "blur(11px)",
+              }}
+              animate={
+                prefersReducedMotion
+                  ? undefined
+                  : {
+                      x: [-8, 8, -8],
+                      opacity: [0.34, 0.58, 0.34],
+                    }
+              }
+              transition={{
+                duration: 5.2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.2 + index * 0.4,
+              }}
+            />
+            <div
+              className="absolute left-1/2 top-1/2 h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30"
+              style={{
+                background:
+                  "radial-gradient(circle, transparent 36%, hsl(var(--gold) / 0.16) 58%, transparent 74%)",
+              }}
+            />
+            <div
+              className="absolute bottom-[9%] left-1/2 h-[9%] w-[60%] -translate-x-1/2 opacity-35"
+              style={{
+                background: "radial-gradient(ellipse, hsl(var(--gold-light) / 0.3), transparent 68%)",
+                filter: "blur(14px)",
               }}
             />
           </div>
 
-          {/* Back face (mirrored) */}
           <div
-            className="absolute inset-0 flex items-center justify-center p-4"
-            style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+            className="absolute inset-0 flex items-center justify-center p-1"
+            style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+          >
+            {!imageLoaded && <div className="absolute inset-[12%] rounded-full bg-muted/20 animate-pulse" />}
+            <img
+              src={product.image}
+              alt={product.title}
+              loading="lazy"
+              draggable={false}
+              onLoad={() => setImageLoaded(true)}
+              className={`relative z-10 h-[98%] w-[98%] object-contain transition-opacity duration-500 ${
+                imageLoaded ? "opacity-100" : "opacity-0"
+              }`}
+              style={{ filter: "drop-shadow(0 18px 28px rgba(15, 23, 42, 0.16))" }}
+            />
+          </div>
+
+          <div
+            className="absolute inset-0 flex items-center justify-center p-1"
+            style={{
+              transform: "rotateY(180deg)",
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+            }}
           >
             <img
               src={product.image}
               alt={`${product.title} back`}
               draggable={false}
-              className="w-[92%] h-[92%] object-contain scale-x-[-1]"
-              style={{
-                filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.15))",
-              }}
+              className="relative z-10 h-[98%] w-[98%] object-contain scale-x-[-1]"
+              style={{ filter: "drop-shadow(0 18px 28px rgba(15, 23, 42, 0.16))" }}
             />
           </div>
         </motion.div>
 
-        {/* Floor shadow */}
-        <motion.div
-          className="absolute -bottom-3 left-1/2 w-[55%] h-8 rounded-[50%] pointer-events-none"
+        <div
+          className="pointer-events-none absolute bottom-0 left-1/2 h-[9%] w-[68%] -translate-x-1/2 rounded-[999px] opacity-45"
           style={{
-            x: shadowOffsetX,
-            translateX: "-50%",
-            filter: useTransform(shadowBlur, (b) => `blur(${b}px)`),
-            background: "radial-gradient(ellipse, hsl(var(--foreground) / 0.12), transparent 70%)",
+            background: "radial-gradient(ellipse, hsl(var(--foreground) / 0.12), transparent 72%)",
+            filter: "blur(16px)",
           }}
         />
       </div>
 
-      {/* Drag hint */}
-      <motion.p
-        className="mt-4 font-sans text-[9px] uppercase tracking-[0.25em] text-muted-foreground/40 flex items-center gap-2"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.8 + index * 0.2 }}
-      >
-        <span className="inline-block w-5 h-[0.5px] bg-muted-foreground/20" />
-        Drag to rotate
-        <span className="inline-block w-5 h-[0.5px] bg-muted-foreground/20" />
-      </motion.p>
-
-      {/* Product info */}
-      <Link
-        to={`/product/static/${product.handle}`}
-        className="mt-6 text-center group"
-      >
-        <h3 className="font-serif text-lg md:text-xl tracking-tight transition-colors duration-300 group-hover:text-gold-dark">
+      <Link to={`/product/static/${product.handle}`} className="mt-3 block text-center group">
+        <h3 className="font-serif text-[15px] leading-snug tracking-tight transition-colors duration-300 group-hover:text-gold-dark md:text-xl">
           {product.title}
         </h3>
-        <p className="mt-1.5 font-sans text-xs md:text-sm font-medium tracking-widest text-muted-foreground">
+        <p className="mt-1 font-sans text-[10px] font-medium tracking-[0.22em] text-muted-foreground md:text-xs">
           {product.currency} {product.price.toLocaleString()}
         </p>
-        <span className="mt-3 inline-block font-sans text-[10px] uppercase tracking-[0.2em] text-muted-foreground/60 border-b border-muted-foreground/20 pb-0.5 transition-all duration-300 group-hover:text-foreground group-hover:border-foreground/40">
-          View Details
-        </span>
       </Link>
-    </motion.div>
+    </motion.article>
   );
 }
 
 export function ProductShowcase3D() {
   return (
-    <section className="py-20 md:py-32 border-t border-border/20">
+    <section className="border-t border-border/20 py-16 md:py-28">
       <div className="container">
         <motion.div
-          className="text-center mb-14 md:mb-20"
+          className="mb-10 text-center md:mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="font-sans text-[10px] font-medium uppercase tracking-[0.3em] text-muted-foreground mb-4">
+          <p className="mb-3 font-sans text-[10px] font-medium uppercase tracking-[0.3em] text-muted-foreground">
             New Arrivals
           </p>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl tracking-tight">
+          <h2 className="font-serif text-3xl tracking-tight md:text-4xl lg:text-5xl">
             The Collection
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-12 max-w-5xl mx-auto">
-          {/* Products are imported inline to avoid circular deps */}
+        <div className="mx-auto grid max-w-5xl grid-cols-2 items-start gap-3 md:gap-8">
+          {staticProducts.map((product, index) => (
+            <Product3DCard key={product.id} product={product} index={index} />
+          ))}
         </div>
       </div>
     </section>
   );
 }
-
-// Export card for external use
-export { Product3DCard };
